@@ -1,0 +1,236 @@
+:root {
+  --gap: 8px;
+  --radius: 6px;
+  --muted: var(--vscode-descriptionForeground);
+  --track: color-mix(in srgb, var(--vscode-foreground) 16%, transparent);
+  --fill: color-mix(in srgb, var(--vscode-foreground) 58%, transparent);
+  --warn: var(--vscode-editorWarning-foreground, #cca700);
+  --err: var(--vscode-errorForeground, #f48771);
+  --border: var(--vscode-widget-border, var(--vscode-panel-border, rgba(128, 128, 128, 0.35)));
+}
+
+.c-blue { --pc: var(--vscode-codexProfiles-blue, #58a6ff); }
+.c-green { --pc: var(--vscode-codexProfiles-green, #4ac28a); }
+.c-orange { --pc: var(--vscode-codexProfiles-orange, #f08a3c); }
+.c-purple { --pc: var(--vscode-codexProfiles-purple, #b38bff); }
+.c-red { --pc: var(--vscode-codexProfiles-red, #f2716b); }
+.c-yellow { --pc: var(--vscode-codexProfiles-yellow, #e2b33e); }
+.c-teal { --pc: var(--vscode-codexProfiles-teal, #3bc4c4); }
+.c-pink { --pc: var(--vscode-codexProfiles-pink, #f07cb4); }
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 8px 8px 16px;
+  color: var(--vscode-foreground);
+  background: transparent;
+  font-family: var(--vscode-font-family);
+  font-size: var(--vscode-font-size, 13px);
+  line-height: 1.4;
+}
+
+.icon { display: inline-flex; width: 16px; height: 16px; flex: none; vertical-align: -3px; }
+.icon svg { width: 100%; height: 100%; }
+.muted { color: var(--muted); }
+.warn-text { color: var(--warn); }
+.center { text-align: center; }
+
+/* ------------------------------------------------------------ buttons */
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  border: 1px solid var(--vscode-button-border, transparent);
+  border-radius: 3px;
+  padding: 4px 12px;
+  font: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.btn.primary { color: var(--vscode-button-foreground); background: var(--vscode-button-background); }
+.btn.primary:hover { background: var(--vscode-button-hoverBackground); }
+.btn.secondary {
+  color: var(--vscode-button-secondaryForeground, var(--vscode-foreground));
+  background: var(--vscode-button-secondaryBackground, transparent);
+  border-color: var(--border);
+}
+.btn.secondary:hover { background: var(--vscode-button-secondaryHoverBackground, var(--vscode-toolbar-hoverBackground)); }
+.btn.small { padding: 1px 8px; font-size: 12px; gap: 4px; }
+.btn.small .icon { width: 14px; height: 14px; vertical-align: -2px; }
+.btn:focus-visible, .link:focus-visible, .icon-btn:focus-visible, .add-dashed:focus-visible {
+  outline: 1px solid var(--vscode-focusBorder); outline-offset: 1px;
+}
+
+.link {
+  border: 0; padding: 0; background: none; font: inherit; cursor: pointer;
+  color: var(--vscode-textLink-foreground);
+}
+.link:hover { color: var(--vscode-textLink-activeForeground); text-decoration: underline; }
+
+.icon-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 22px; height: 22px; padding: 0; border: 0; border-radius: 4px;
+  color: var(--vscode-icon-foreground, var(--vscode-foreground)); background: none; cursor: pointer;
+  opacity: 0.75;
+}
+.icon-btn:hover { opacity: 1; background: var(--vscode-toolbar-hoverBackground); }
+
+/* ------------------------------------------------------------ banners */
+.banner {
+  display: flex; gap: 10px;
+  margin-bottom: 10px; padding: 10px 12px;
+  border-radius: var(--radius);
+  border: 1px solid var(--vscode-inputValidation-warningBorder, var(--warn));
+  background: var(--vscode-inputValidation-warningBackground, color-mix(in srgb, var(--warn) 18%, transparent));
+}
+.banner-icon { color: var(--warn); margin-top: 2px; }
+.banner-body { min-width: 0; flex: 1; }
+.banner-title { font-weight: 600; }
+.banner-text { margin-top: 2px; }
+.banner-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; margin-top: 8px; }
+
+/* ------------------------------------------------------------ account cards */
+.list { display: flex; flex-direction: column; gap: 2px; }
+
+.card {
+  position: relative;
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 8px 6px 8px 12px;
+  border-radius: var(--radius);
+  outline: none;
+  cursor: default;
+}
+.card:hover { background: var(--vscode-list-hoverBackground); }
+.card:focus-visible { outline: 1px solid var(--vscode-focusBorder); outline-offset: -1px; }
+.card.current { background: var(--vscode-list-inactiveSelectionBackground, var(--vscode-list-hoverBackground)); }
+.card.current::before {
+  content: ""; position: absolute; left: 0; top: 6px; bottom: 6px; width: 3px; border-radius: 2px;
+  background: var(--pc);
+}
+.card.chosen::before {
+  content: ""; position: absolute; left: 0; top: 6px; bottom: 6px; width: 3px; border-radius: 2px;
+  background: repeating-linear-gradient(var(--pc) 0 4px, transparent 4px 7px);
+}
+
+.avatar {
+  position: relative; flex: none;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 30px; height: 30px; margin-top: 1px;
+  border-radius: 50%;
+  border: 2px solid var(--pc, var(--muted));
+  background: color-mix(in srgb, var(--pc, var(--muted)) 22%, transparent);
+  color: var(--pc, var(--muted));
+  font-weight: 700; font-size: 12px; letter-spacing: 0.02em;
+}
+.avatar.small { width: 20px; height: 20px; border-width: 1.5px; font-size: 9px; }
+.avatar.ghost { --pc: var(--muted); border-style: dashed; background: none; }
+.avatar.ghost .icon { width: 14px; height: 14px; }
+.badge-check {
+  position: absolute; right: -7px; bottom: -6px;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 14px; height: 14px; border-radius: 50%;
+  color: #fff; background: var(--vscode-focusBorder, #0078d4);
+  box-shadow: 0 0 0 2px var(--vscode-sideBar-background, var(--vscode-editor-background));
+}
+.badge-check .icon { width: 10px; height: 10px; }
+
+.body { flex: 1; min-width: 0; }
+.line1 { display: flex; align-items: center; gap: 6px; min-width: 0; }
+.name { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.star { color: var(--vscode-charts-yellow, #e2b33e); }
+.star .icon { width: 14px; height: 14px; }
+.sub { margin-top: 1px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sub .icon { width: 14px; height: 14px; vertical-align: -2px; }
+.sub.wrap { white-space: normal; }
+.path { font-size: 12px; }
+
+.pill {
+  display: inline-block; padding: 0 5px;
+  border: 1px solid currentColor; border-radius: 3px;
+  font-size: 11px; font-weight: 600; line-height: 16px;
+}
+.pill.limited { color: var(--warn); }
+.pill.pending { color: var(--warn); font-weight: 500; }
+
+.side { display: flex; align-items: center; gap: 4px; flex: none; }
+/* The hover "Switch" button floats over the text so that showing it does not reflow the card. */
+.card .side .btn {
+  position: absolute; top: 8px; right: 32px; display: none;
+  box-shadow: 0 0 0 4px var(--vscode-list-hoverBackground);
+}
+.card:hover .side .btn, .card:focus-within .side .btn { display: inline-flex; }
+
+.card-actions { margin-top: 6px; }
+
+/* usage meters */
+.meters { display: flex; flex-wrap: wrap; gap: 2px 14px; margin-top: 5px; cursor: pointer; }
+.meter { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; }
+.meter-label { color: var(--muted); font-weight: 600; min-width: 1.4em; }
+.bar { position: relative; width: 84px; height: 4px; border-radius: 2px; background: var(--track); }
+.fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 2px; background: var(--fill); }
+.tick {
+  position: absolute; top: -4px; width: 2px; height: 12px; margin-left: -1px; border-radius: 1px;
+  background: var(--vscode-foreground);
+}
+.meter-pct { color: var(--muted); min-width: 3.2em; font-variant-numeric: tabular-nums; }
+.meter.high .fill { background: var(--warn); }
+.meter.high .meter-pct { color: var(--warn); }
+.meter.full .fill { background: var(--err); }
+.meter.full .meter-pct { color: var(--err); }
+.meters:hover .meter-pct { color: var(--vscode-foreground); }
+
+.note { margin-top: 3px; font-size: 12px; color: var(--muted); }
+.note.pace { color: var(--warn); }
+
+/* inline switch confirmation */
+.confirm {
+  margin-top: 8px; padding: 8px 10px;
+  border-radius: 4px; border: 1px solid var(--border);
+  background: var(--vscode-editorWidget-background, transparent);
+}
+.confirm-text { color: var(--muted); font-size: 12px; }
+.confirm-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; margin-top: 8px; }
+
+/* ------------------------------------------------------------ add */
+.add-dashed {
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  width: 100%; margin-top: 10px; padding: 6px;
+  border: 1px dashed color-mix(in srgb, var(--vscode-foreground) 30%, transparent);
+  border-radius: var(--radius);
+  background: none; color: var(--muted); font: inherit; cursor: pointer;
+}
+.add-dashed:hover { color: var(--vscode-foreground); background: var(--vscode-list-hoverBackground); }
+.center { margin-top: 8px; }
+
+/* ------------------------------------------------------------ sections */
+.section { margin-top: 18px; }
+.section-title {
+  margin: 0 0 6px 4px;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--vscode-sideBarSectionHeader-foreground, var(--muted));
+}
+
+.found {
+  display: flex; align-items: center; gap: 10px;
+  padding: 6px 6px 6px 12px; border-radius: var(--radius);
+}
+.found:hover { background: var(--vscode-list-hoverBackground); }
+.found .line1 { gap: 8px; }
+
+.shared-card {
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  outline: none;
+}
+.shared-card:focus-visible { outline: 1px solid var(--vscode-focusBorder); outline-offset: -1px; }
+.shared-card .line1 { justify-content: space-between; }
+.shared-card .sub { margin-top: 4px; }
+.members { display: flex; align-items: center; gap: 8px; }
+.faces { display: inline-flex; }
+.faces .avatar + .avatar { margin-left: -5px; }
+.faces .avatar { box-shadow: 0 0 0 1.5px var(--vscode-sideBar-background, var(--vscode-editor-background)); }
+.own .link { font-size: inherit; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .card, .found, .btn, .icon-btn, .add-dashed { transition: background-color 80ms ease; }
+}

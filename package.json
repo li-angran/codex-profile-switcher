@@ -1,0 +1,597 @@
+{
+  "name": "codex-profile-switcher",
+  "displayName": "Codex Profile Switcher",
+  "description": "Run a different Codex (ChatGPT) account in each VS Code window, watch every account's usage limits, and hand a conversation to another account when one runs out.",
+  "version": "0.2.1",
+  "publisher": "angran",
+  "author": {
+    "name": "angran"
+  },
+  "license": "MIT",
+  "icon": "media/icon.png",
+  "galleryBanner": {
+    "color": "#10161D",
+    "theme": "dark"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/li-angran/codex-profile-switcher.git"
+  },
+  "bugs": {
+    "url": "https://github.com/li-angran/codex-profile-switcher/issues"
+  },
+  "homepage": "https://github.com/li-angran/codex-profile-switcher#readme",
+  "engines": {
+    "vscode": "^1.94.0"
+  },
+  "categories": [
+    "AI"
+  ],
+  "keywords": [
+    "codex",
+    "openai",
+    "chatgpt",
+    "accounts",
+    "multiple accounts",
+    "account switcher",
+    "profiles",
+    "CODEX_HOME",
+    "usage limit",
+    "rate limit",
+    "shared history",
+    "continue conversation"
+  ],
+  "extensionKind": [
+    "workspace"
+  ],
+  "activationEvents": [
+    "*"
+  ],
+  "main": "./src/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "codexProfileSwitcher",
+          "title": "Codex Profiles",
+          "icon": "media/profiles.svg"
+        }
+      ]
+    },
+    "views": {
+      "codexProfileSwitcher": [
+        {
+          "type": "webview",
+          "id": "codexProfileSwitcher.profiles",
+          "name": "Accounts",
+          "icon": "media/profiles.svg",
+          "contextualTitle": "Codex Profiles"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "codexProfileSwitcher.switchProfile",
+        "title": "Choose Account for This Window…",
+        "category": "Codex Profiles",
+        "icon": "$(arrow-swap)"
+      },
+      {
+        "command": "codexProfileSwitcher.restartExtensionHost",
+        "title": "Apply Profile (Restart Extension Host)",
+        "category": "Codex Profiles",
+        "icon": "$(debug-restart)"
+      },
+      {
+        "command": "codexProfileSwitcher.useDefault",
+        "title": "Go Back to the Account for New Windows",
+        "category": "Codex Profiles"
+      },
+      {
+        "command": "codexProfileSwitcher.setNewWindowProfile",
+        "title": "Make Default for New Windows",
+        "category": "Codex Profiles",
+        "icon": "$(star-empty)"
+      },
+      {
+        "command": "codexProfileSwitcher.continueWithAccount",
+        "title": "Hand Off Conversation to Another Account…",
+        "category": "Codex Profiles",
+        "icon": "$(arrow-swap)"
+      },
+      {
+        "command": "codexProfileSwitcher.continueWithThis",
+        "title": "Hand Off Conversation to This Account",
+        "category": "Codex Profiles"
+      },
+      {
+        "command": "codexProfileSwitcher.addProfile",
+        "title": "Add Account",
+        "category": "Codex Profiles",
+        "icon": "$(add)"
+      },
+      {
+        "command": "codexProfileSwitcher.addExistingFolder",
+        "title": "Add a Codex Home Folder…",
+        "category": "Codex Profiles",
+        "icon": "$(folder-opened)"
+      },
+      {
+        "command": "codexProfileSwitcher.importAuth",
+        "title": "Import Existing Login (auth.json)…",
+        "category": "Codex Profiles",
+        "icon": "$(cloud-download)"
+      },
+      {
+        "command": "codexProfileSwitcher.signIn",
+        "title": "Sign In…",
+        "category": "Codex Profiles",
+        "icon": "$(sign-in)"
+      },
+      {
+        "command": "codexProfileSwitcher.signInAnother",
+        "title": "Sign In to Another Account…",
+        "category": "Codex Profiles",
+        "icon": "$(sign-in)"
+      },
+      {
+        "command": "codexProfileSwitcher.signOut",
+        "title": "Sign Out…",
+        "category": "Codex Profiles",
+        "icon": "$(sign-out)"
+      },
+      {
+        "command": "codexProfileSwitcher.usageDetails",
+        "title": "Usage Details…",
+        "category": "Codex Profiles",
+        "icon": "$(pulse)"
+      },
+      {
+        "command": "codexProfileSwitcher.remindAtReset",
+        "title": "Notify Me When a Limit Resets",
+        "category": "Codex Profiles",
+        "icon": "$(bell)"
+      },
+      {
+        "command": "codexProfileSwitcher.renameProfile",
+        "title": "Rename Account…",
+        "category": "Codex Profiles",
+        "icon": "$(edit)"
+      },
+      {
+        "command": "codexProfileSwitcher.changeColor",
+        "title": "Change Color…",
+        "category": "Codex Profiles",
+        "icon": "$(symbol-color)"
+      },
+      {
+        "command": "codexProfileSwitcher.toggleHistory",
+        "title": "Change History Sharing…",
+        "category": "Codex Profiles",
+        "icon": "$(history)"
+      },
+      {
+        "command": "codexProfileSwitcher.changeFolder",
+        "title": "Point at Another Folder…",
+        "category": "Codex Profiles",
+        "icon": "$(folder)"
+      },
+      {
+        "command": "codexProfileSwitcher.openTerminal",
+        "title": "New Terminal with This Account…",
+        "category": "Codex Profiles",
+        "icon": "$(terminal)"
+      },
+      {
+        "command": "codexProfileSwitcher.revealFolder",
+        "title": "Show Codex Home Folder…",
+        "category": "Codex Profiles",
+        "icon": "$(folder-opened)"
+      },
+      {
+        "command": "codexProfileSwitcher.revealMainHome",
+        "title": "Reveal Main Codex Home",
+        "category": "Codex Profiles",
+        "icon": "$(folder-opened)"
+      },
+      {
+        "command": "codexProfileSwitcher.removeProfile",
+        "title": "Remove from List…",
+        "category": "Codex Profiles",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "codexProfileSwitcher.hideFound",
+        "title": "Hide from Found on This Computer",
+        "category": "Codex Profiles"
+      },
+      {
+        "command": "codexProfileSwitcher.deleteFoundFolder",
+        "title": "Delete Folder…",
+        "category": "Codex Profiles",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "codexProfileSwitcher.installShellAliases",
+        "title": "Install Shell Launchers…",
+        "category": "Codex Profiles",
+        "icon": "$(terminal)"
+      },
+      {
+        "command": "codexProfileSwitcher.openConflict",
+        "title": "Resolve Conflict",
+        "category": "Codex Profiles"
+      },
+      {
+        "command": "codexProfileSwitcher.refresh",
+        "title": "Refresh",
+        "category": "Codex Profiles",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "codexProfileSwitcher.openSettings",
+        "title": "Open Settings",
+        "category": "Codex Profiles",
+        "icon": "$(gear)"
+      },
+      {
+        "command": "codexProfileSwitcher.showLog",
+        "title": "Show Log",
+        "category": "Codex Profiles",
+        "icon": "$(output)"
+      },
+      {
+        "command": "codexProfileSwitcher.showPanel",
+        "title": "Focus Accounts Panel",
+        "category": "Codex Profiles"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "codexProfileSwitcher.addProfile",
+          "when": "view == codexProfileSwitcher.profiles",
+          "group": "navigation@1"
+        },
+        {
+          "command": "codexProfileSwitcher.refresh",
+          "when": "view == codexProfileSwitcher.profiles",
+          "group": "navigation@2"
+        },
+        {
+          "command": "codexProfileSwitcher.addExistingFolder",
+          "when": "view == codexProfileSwitcher.profiles",
+          "group": "1_add@1"
+        },
+        {
+          "command": "codexProfileSwitcher.importAuth",
+          "when": "view == codexProfileSwitcher.profiles",
+          "group": "1_add@2"
+        },
+        {
+          "command": "codexProfileSwitcher.useDefault",
+          "when": "view == codexProfileSwitcher.profiles && codexProfileSwitcher.windowHasOwnProfile",
+          "group": "2_window@1"
+        },
+        {
+          "command": "codexProfileSwitcher.continueWithAccount",
+          "when": "view == codexProfileSwitcher.profiles && workspaceFolderCount > 0",
+          "group": "2_window@2"
+        },
+        {
+          "command": "codexProfileSwitcher.installShellAliases",
+          "when": "view == codexProfileSwitcher.profiles && !isWindows",
+          "group": "3_tools@1"
+        },
+        {
+          "command": "codexProfileSwitcher.openSettings",
+          "when": "view == codexProfileSwitcher.profiles",
+          "group": "3_tools@2"
+        },
+        {
+          "command": "codexProfileSwitcher.showLog",
+          "when": "view == codexProfileSwitcher.profiles",
+          "group": "3_tools@3"
+        }
+      ],
+      "webview/context": [
+        {
+          "command": "codexProfileSwitcher.switchProfile",
+          "when": "webviewId == 'codexProfileSwitcher.profiles' && webviewSection == 'profile' && !cpsChosen",
+          "group": "1_use@1"
+        },
+        {
+          "command": "codexProfileSwitcher.restartExtensionHost",
+          "when": "webviewId == 'codexProfileSwitcher.profiles' && webviewSection == 'profile' && cpsChosen && !cpsApplied",
+          "group": "1_use@2"
+        },
+        {
+          "command": "codexProfileSwitcher.continueWithThis",
+          "when": "webviewId == 'codexProfileSwitcher.profiles' && webviewSection == 'profile' && cpsSignedIn && !cpsApplied && workspaceFolderCount > 0",
+          "group": "1_use@3"
+        },
+        {
+          "command": "codexProfileSwitcher.setNewWindowProfile",
+          "when": "webviewId == 'codexProfileSwitcher.profiles' && webviewSection == 'profile' && !cpsNewWindow",
+          "group": "1_use@4"
+        },
+        {
+          "command": "codexProfileSwitcher.openTerminal",
+          "when": "webviewId == 'codexProfileSwitcher.profiles' && webviewSection == 'profile'",
+          "group": "2_tools@1"
+        },
+        {
+          "command": "codexProfileSwitcher.revealFolder",
+          "when": "webviewId == 'codexProfileSwitcher.profiles' && webviewSection == 'profile'",
+          "group": "2_tools@2"
+        },
+        {
+          "command": "codexProfileSwitcher.usageDetails",
+          "when": "webviewId == 'codexProfileSwitcher.profiles' && webviewSection == 'profile' && cpsChatgpt",
+          "group": "2_tools@3"
+        },
+        {
+          "command": "codexProfileSwitcher.renameProfile",
+          "when": "webviewId == 'codexProfileSwitcher.profiles' && webviewSection == 'profile'",
+          "group": "3_profile@1"
+        },
+        {
+          "command": "codexProfileSwitcher.changeColor",
+          "when": "webviewId == 'codexProfileSwitcher.profiles' && webviewSection == 'profile'",
+          "group": "3_profile@2"
+        },
+        {
+          "command": "codexProfileSwitcher.toggleHistory",
+          "when": "webviewId == 'codexProfileSwitcher.profiles' && webviewSection == 'profile' && !cpsBuiltin",
+          "group": "3_profile@3"
+        },
+        {
+          "command": "codexProfileSwitcher.changeFolder",
+          "when": "webviewId == 'codexProfileSwitcher.profiles' && webviewSection == 'profile' && !cpsBuiltin",
+          "group": "3_profile@4"
+        },
+        {
+          "command": "codexProfileSwitcher.signIn",
+          "when": "webviewId == 'codexProfileSwitcher.profiles' && webviewSection == 'profile' && !cpsSignedIn",
+          "group": "4_account@1"
+        },
+        {
+          "command": "codexProfileSwitcher.signInAnother",
+          "when": "webviewId == 'codexProfileSwitcher.profiles' && webviewSection == 'profile' && cpsSignedIn",
+          "group": "4_account@1"
+        },
+        {
+          "command": "codexProfileSwitcher.signOut",
+          "when": "webviewId == 'codexProfileSwitcher.profiles' && webviewSection == 'profile' && cpsSignedIn",
+          "group": "4_account@2"
+        },
+        {
+          "command": "codexProfileSwitcher.removeProfile",
+          "when": "webviewId == 'codexProfileSwitcher.profiles' && webviewSection == 'profile' && !cpsBuiltin",
+          "group": "5_remove@1"
+        },
+        {
+          "command": "codexProfileSwitcher.addExistingFolder",
+          "when": "webviewId == 'codexProfileSwitcher.profiles' && webviewSection == 'found'",
+          "group": "1_add@1"
+        },
+        {
+          "command": "codexProfileSwitcher.revealFolder",
+          "when": "webviewId == 'codexProfileSwitcher.profiles' && webviewSection == 'found'",
+          "group": "2_tools@1"
+        },
+        {
+          "command": "codexProfileSwitcher.hideFound",
+          "when": "webviewId == 'codexProfileSwitcher.profiles' && webviewSection == 'found'",
+          "group": "3_hide@1"
+        },
+        {
+          "command": "codexProfileSwitcher.deleteFoundFolder",
+          "when": "webviewId == 'codexProfileSwitcher.profiles' && webviewSection == 'found' && cpsOurs",
+          "group": "3_hide@2"
+        },
+        {
+          "command": "codexProfileSwitcher.toggleHistory",
+          "when": "webviewId == 'codexProfileSwitcher.profiles' && webviewSection == 'shared'",
+          "group": "1_share@1"
+        },
+        {
+          "command": "codexProfileSwitcher.revealMainHome",
+          "when": "webviewId == 'codexProfileSwitcher.profiles' && webviewSection == 'shared'",
+          "group": "2_tools@1"
+        },
+        {
+          "command": "codexProfileSwitcher.showLog",
+          "when": "webviewId == 'codexProfileSwitcher.profiles' && webviewSection == 'shared'",
+          "group": "2_tools@2"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "codexProfileSwitcher.continueWithThis",
+          "when": "false"
+        },
+        {
+          "command": "codexProfileSwitcher.signInAnother",
+          "when": "false"
+        },
+        {
+          "command": "codexProfileSwitcher.hideFound",
+          "when": "false"
+        },
+        {
+          "command": "codexProfileSwitcher.deleteFoundFolder",
+          "when": "false"
+        },
+        {
+          "command": "codexProfileSwitcher.openConflict",
+          "when": "false"
+        },
+        {
+          "command": "codexProfileSwitcher.useDefault",
+          "when": "codexProfileSwitcher.windowHasOwnProfile"
+        },
+        {
+          "command": "codexProfileSwitcher.continueWithAccount",
+          "when": "workspaceFolderCount > 0"
+        },
+        {
+          "command": "codexProfileSwitcher.installShellAliases",
+          "when": "!isWindows"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Codex Profile Switcher",
+      "properties": {
+        "codexProfileSwitcher.mainCodexHome": {
+          "type": "string",
+          "default": "",
+          "scope": "machine",
+          "markdownDescription": "Codex home of the built-in **Default** profile and the target of shared history. Empty: `~/.codex`."
+        },
+        "codexProfileSwitcher.codexPath": {
+          "type": "string",
+          "default": "",
+          "scope": "machine",
+          "markdownDescription": "Codex CLI used for `codex login` and `codex resume` in a terminal. Empty: the binary bundled with the official Codex extension, else `codex` on PATH."
+        },
+        "codexProfileSwitcher.restartAfterSwitch": {
+          "type": "string",
+          "enum": [
+            "ask",
+            "always",
+            "never"
+          ],
+          "default": "ask",
+          "enumDescriptions": [
+            "Confirm in the panel (Switch and restart / Switch later)",
+            "Switch and restart the extension host right away",
+            "Only remember the choice; restart yourself"
+          ],
+          "markdownDescription": "Codex picks its account at startup, so a change applies once the extension host restarts. Every extension in that window restarts with it."
+        },
+        "codexProfileSwitcher.colorStatusBar": {
+          "type": "boolean",
+          "default": true,
+          "description": "Tint the status bar entry with the account's color."
+        },
+        "codexProfileSwitcher.showUsage": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Show usage meters on each account. The figures come from the rate-limit records Codex keeps in its local conversation files; the extension makes no network requests for them."
+        },
+        "codexProfileSwitcher.usageInStatusBar": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "always",
+            "off"
+          ],
+          "default": "auto",
+          "enumDescriptions": [
+            "Only when the figure is 80% or higher, or running ahead of the clock",
+            "Every time a figure is known",
+            "Never"
+          ],
+          "description": "When to append the current account's usage to its status bar entry."
+        },
+        "codexProfileSwitcher.offerContinue": {
+          "type": "string",
+          "enum": [
+            "ask",
+            "off"
+          ],
+          "default": "ask",
+          "enumDescriptions": [
+            "Suggest handing the conversation to another account",
+            "Stay quiet; the limit is still visible in the panel and status bar"
+          ],
+          "description": "What to do when the account in this window reaches a usage limit."
+        }
+      }
+    },
+    "colors": [
+      {
+        "id": "codexProfiles.blue",
+        "description": "Accent for accounts set to blue: avatar ring, status bar text and terminal tab.",
+        "defaults": {
+          "dark": "#58A6FF",
+          "light": "#1F6FC5",
+          "highContrast": "#79B8FF",
+          "highContrastLight": "#0B4F9E"
+        }
+      },
+      {
+        "id": "codexProfiles.green",
+        "description": "Accent for accounts set to green: avatar ring, status bar text and terminal tab.",
+        "defaults": {
+          "dark": "#4AC28A",
+          "light": "#1A7F4B",
+          "highContrast": "#6FE3A8",
+          "highContrastLight": "#0B5E35"
+        }
+      },
+      {
+        "id": "codexProfiles.orange",
+        "description": "Accent for accounts set to orange: avatar ring, status bar text and terminal tab.",
+        "defaults": {
+          "dark": "#F08A3C",
+          "light": "#B4540A",
+          "highContrast": "#FFA661",
+          "highContrastLight": "#8A3D05"
+        }
+      },
+      {
+        "id": "codexProfiles.purple",
+        "description": "Accent for accounts set to purple: avatar ring, status bar text and terminal tab.",
+        "defaults": {
+          "dark": "#B38BFF",
+          "light": "#6E42C1",
+          "highContrast": "#CCB0FF",
+          "highContrastLight": "#522E99"
+        }
+      },
+      {
+        "id": "codexProfiles.red",
+        "description": "Accent for accounts set to red: avatar ring, status bar text and terminal tab.",
+        "defaults": {
+          "dark": "#F2716B",
+          "light": "#C0392F",
+          "highContrast": "#FF948F",
+          "highContrastLight": "#96241D"
+        }
+      },
+      {
+        "id": "codexProfiles.yellow",
+        "description": "Accent for accounts set to yellow: avatar ring, status bar text and terminal tab.",
+        "defaults": {
+          "dark": "#E2B33E",
+          "light": "#8C6200",
+          "highContrast": "#FFD36B",
+          "highContrastLight": "#684800"
+        }
+      },
+      {
+        "id": "codexProfiles.teal",
+        "description": "Accent for accounts set to teal: avatar ring, status bar text and terminal tab.",
+        "defaults": {
+          "dark": "#3BC4C4",
+          "light": "#0A7778",
+          "highContrast": "#62E0E0",
+          "highContrastLight": "#055A5B"
+        }
+      },
+      {
+        "id": "codexProfiles.pink",
+        "description": "Accent for accounts set to pink: avatar ring, status bar text and terminal tab.",
+        "defaults": {
+          "dark": "#F07CB4",
+          "light": "#B4306C",
+          "highContrast": "#FF9FCD",
+          "highContrastLight": "#8C2150"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,5 @@
+*.vsix
+build_vsix.py
+assets/**
+.git/**
+.gitignore
